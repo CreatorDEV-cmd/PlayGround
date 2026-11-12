@@ -3,41 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <title>Village of Briarfen</title>
+  <title>Briarfen 3D</title>
   <style>
     :root {
-      --bg1: #0a1119;
-      --bg2: #152b2d;
-      --panel: rgba(11, 24, 25, 0.75);
-      --panel-strong: rgba(15, 35, 36, 0.9);
-      --gold: #f3d17a;
-      --gold-2: #ffefb0;
-      --cyan: #8feaf2;
-      --green: #a3d98a;
-      --forest: #234d3d;
-      --village: #d8ba84;
-      --stone: #7c8e9d;
-      --text: #ecf5ff;
-      --muted: #afc3d6;
-      --danger: #f7767d;
-      --shadow: rgba(0, 0, 0, 0.38);
+      --bg1: #071118;
+      --bg2: #0a1d27;
+      --panel: rgba(10,22,25,.78);
+      --panel-strong: rgba(14, 32, 35, 0.9);
+      --gold: #f3d384;
+      --gold-2: #ffefb2;
+      --cyan: #9ceaf0;
+      --green: #89d691;
+      --muted: #afc6d7;
+      --text: #edf8ff;
+      --shadow: rgba(0,0,0,.35);
+      --danger: #f37e8a;
     }
 
     * { box-sizing: border-box; }
-
     html, body {
       margin: 0;
       min-height: 100%;
-      font-family: Inter, "Segoe UI", Tahoma, sans-serif;
-      background: radial-gradient(circle at top, #1a2e36 0%, #0d1820 46%, #060d12 100%);
+      background: radial-gradient(circle at top, #163240 0%, #091722 40%, #050a10 100%);
       color: var(--text);
+      font-family: Inter, "Segoe UI", sans-serif;
     }
-
     body {
       min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: clamp(12px, 2vw, 24px);
+      padding: clamp(12px,2vw,24px);
+      overflow: hidden;
     }
 
     .shell {
@@ -49,93 +45,82 @@
 
     .topbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       padding: 0 8px;
       gap: 12px;
     }
-
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-
     .crest {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 12px;
       display: grid;
       place-items: center;
+      background: rgba(12,27,35,.75);
+      border: 1px solid rgba(156,234,240,.5);
+      box-shadow: 0 0 18px rgba(156,234,240,.18);
       font-size: 20px;
-      background: rgba(19, 39, 41, 0.75);
-      border: 1px solid rgba(143, 234, 242, 0.55);
-      box-shadow: 0 0 18px rgba(143, 234, 242, 0.18);
     }
-
     .brand h1 {
       margin: 0;
       font-size: 14px;
-      letter-spacing: 0.25em;
+      letter-spacing: .24em;
       text-transform: uppercase;
     }
-
     .brand span {
       display: block;
       margin-top: 3px;
       font-size: 9px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      letter-spacing: .18em;
       color: var(--muted);
+      text-transform: uppercase;
     }
-
     .status {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
-
     .pill {
-      min-width: 110px;
-      background: rgba(12, 24, 26, 0.8);
-      border: 1px solid rgba(188, 221, 236, 0.15);
+      min-width: 106px;
+      padding: 8px 10px;
       border-radius: 10px;
-      padding: 7px 10px;
+      background: rgba(12,24,29,.74);
+      border: 1px solid rgba(183, 215, 232, 0.17);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
     }
-
     .pill small {
       display: block;
+      margin-bottom: 4px;
       font-size: 8px;
-      letter-spacing: 0.18em;
+      letter-spacing: .16em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 3px;
     }
-
     .pill strong {
       font-size: 16px;
-      letter-spacing: 0.04em;
-      color: var(--text);
+      letter-spacing: .04em;
     }
 
     .game-card {
       position: relative;
-      border-radius: 17px;
+      border-radius: 18px;
       overflow: hidden;
-      background: #0d1f21;
-      border: 1px solid rgba(164, 201, 219, 0.18);
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+      background: #091922;
+      border: 1px solid rgba(168,205,220,.18);
+      box-shadow: 0 28px 80px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
     }
 
-    canvas {
-      display: block;
+    #viewport {
       width: 100%;
-      height: auto;
-      aspect-ratio: 1000 / 680;
-      background: #d7eff3;
+      height: min(72vh, 780px);
+      display: block;
+      background: linear-gradient(#71a8d2, #4a7c8f 18%, #7ea96e 19%, #6e9d6a 100%);
     }
 
     .hud {
@@ -143,51 +128,42 @@
       top: 14px;
       left: 18px;
       right: 18px;
+      z-index: 4;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       pointer-events: none;
-      z-index: 3;
     }
-
-    .hud .left, .hud .right {
+    .left-stack, .right-stack {
       display: flex;
+      gap: 8px;
       align-items: center;
-      gap: 10px;
       flex-wrap: wrap;
-    }
-
-    .hud .pill {
-      background: rgba(12, 25, 28, 0.72);
-      backdrop-filter: blur(2px);
-      pointer-events: none;
     }
 
     .questBox {
       position: absolute;
       left: 18px;
-      bottom: 122px;
-      max-width: 300px;
-      z-index: 3;
-      background: rgba(13, 26, 28, 0.7);
-      border: 1px solid rgba(144, 200, 223, 0.17);
-      border-radius: 12px;
+      bottom: 126px;
+      max-width: 340px;
+      z-index: 4;
       padding: 12px 14px;
-      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
+      border-radius: 12px;
+      background: rgba(8,20,22,.7);
+      border: 1px solid rgba(161, 210, 228, 0.17);
+      box-shadow: 0 12px 24px rgba(0,0,0,.15);
     }
-
     .questBox h2 {
       margin: 0 0 6px;
       font-size: 10px;
-      letter-spacing: 0.2em;
+      letter-spacing: .2em;
       text-transform: uppercase;
       color: var(--gold);
     }
-
     .questBox p {
       margin: 0;
-      line-height: 1.45;
       font-size: 12px;
+      line-height: 1.35;
       color: var(--text);
     }
 
@@ -196,14 +172,13 @@
       left: 0;
       right: 0;
       bottom: 0;
+      padding: 0 18px 18px;
       display: flex;
       justify-content: space-between;
       align-items: end;
-      padding: 0 18px 18px;
-      z-index: 4;
       pointer-events: none;
+      z-index: 5;
     }
-
     .dpad {
       display: grid;
       grid-template-columns: repeat(3, 52px);
@@ -211,144 +186,117 @@
       gap: 8px;
       pointer-events: auto;
     }
-
     .dpad button, .toolbar button, .startButton {
-      border: 1px solid rgba(176, 222, 238, 0.2);
-      background: rgba(14, 27, 32, 0.72);
+      border: 1px solid rgba(201, 225, 239, 0.2);
+      background: rgba(12, 26, 31, 0.72);
       color: var(--text);
       border-radius: 12px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 18px rgba(0,0,0,.18);
+      user-select: none;
       cursor: pointer;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 20px rgba(0,0,0,0.22);
-      transition: transform 0.08s ease, border-color 0.08s ease;
     }
-
-    .dpad button:active, .toolbar button:active, .startButton:active {
-      transform: translateY(1px) scale(0.98);
-    }
-
     .dpad button {
       width: 52px;
       height: 52px;
       font-size: 22px;
       font-weight: 700;
     }
-
     .dpad .up { grid-column: 2; grid-row: 1; }
     .dpad .left { grid-column: 1; grid-row: 2; }
     .dpad .down { grid-column: 2; grid-row: 2; }
     .dpad .right { grid-column: 3; grid-row: 2; }
-
     .toolbar {
       display: flex;
       gap: 10px;
-      pointer-events: auto;
       flex-wrap: wrap;
       justify-content: flex-end;
-      max-width: 420px;
+      pointer-events: auto;
     }
-
     .toolbar button {
-      min-width: 108px;
-      height: 50px;
-      font-size: 12px;
-      letter-spacing: 0.14em;
+      min-width: 112px;
+      height: 48px;
+      font-size: 11px;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 800;
     }
-
-    .toolbar .attack { border-color: rgba(247, 118, 125, 0.35); }
-    .toolbar .talk { border-color: rgba(143, 234, 242, 0.35); }
-    .toolbar .potion { border-color: rgba(163, 217, 138, 0.35); }
+    .toolbar .attack { border-color: rgba(243,126,138,.35); }
+    .toolbar .talk { border-color: rgba(156,234,240,.35); }
+    .toolbar .potion { border-color: rgba(137,214,145,.35); }
 
     .overlay {
       position: absolute;
       inset: 0;
       display: grid;
       place-items: center;
-      background: rgba(4, 15, 18, 0.62);
+      background: rgba(4, 15, 18, 0.58);
       backdrop-filter: blur(3px);
-      z-index: 5;
+      z-index: 10;
     }
-
-    .overlay.hidden {
-      display: none;
-    }
-
+    .overlay.hidden { display: none; }
     .panel {
-      width: min(440px, calc(100% - 28px));
-      background: rgba(9, 21, 22, 0.82);
-      border: 1px solid rgba(179, 212, 226, 0.22);
-      border-radius: 18px;
+      width: min(460px, calc(100% - 28px));
       padding: 26px 22px 20px;
+      border-radius: 18px;
+      background: rgba(9,22,25,.82);
+      border: 1px solid rgba(182,208,221,.22);
+      box-shadow: 0 18px 36px rgba(0,0,0,.25);
       text-align: center;
-      box-shadow: 0 18px 36px rgba(0,0,0,0.28);
     }
-
     .eyebrow {
-      color: var(--gold);
       font-size: 10px;
-      letter-spacing: 0.2em;
+      letter-spacing: .22em;
       text-transform: uppercase;
+      color: var(--gold);
       margin-bottom: 10px;
     }
-
     .panel h2 {
-      margin: 0 0 12px;
-      font-size: clamp(28px, 4vw, 42px);
-      letter-spacing: 0.08em;
+      margin: 0 0 14px;
+      font-size: clamp(28px,4vw,48px);
+      letter-spacing: .09em;
       text-transform: uppercase;
-      line-height: 1.05;
+      line-height: .98;
     }
-
     .panel p {
       margin: 0;
       color: var(--muted);
       line-height: 1.6;
       font-size: 14px;
     }
-
-    .panel .meta {
-      margin-top: 18px;
+    .meta {
+      margin-top: 16px;
       font-size: 11px;
-      letter-spacing: 0.12em;
+      letter-spacing: .15em;
       text-transform: uppercase;
       color: var(--cyan);
     }
-
     .startButton {
-      margin-top: 20px;
       width: 100%;
+      margin-top: 20px;
       height: 54px;
+      background: linear-gradient(180deg, #f9df9c 0%, #d9b056 100%);
+      color: #12232a;
+      border-color: rgba(255,255,255,.38);
       font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      letter-spacing: .18em;
       font-weight: 800;
-      background: linear-gradient(180deg, #f3d17a 0%, #d8aa50 100%);
-      color: #11262d;
-      border-color: rgba(255,255,255,0.38);
+      text-transform: uppercase;
     }
 
     @media (max-width: 760px) {
-      .topbar { align-items: flex-start; }
       .status { gap: 6px; }
       .pill { min-width: 90px; padding: 6px 8px; }
-      .questBox {
-        left: 12px;
-        right: 12px;
-        bottom: 120px;
-        max-width: none;
-      }
-      .controls {
-        padding: 0 12px 12px;
-      }
-      .dpad {
-        grid-template-columns: repeat(3, 44px);
-        grid-template-rows: repeat(3, 44px);
+      .questBox { left: 12px; right: 12px; bottom: 110px; max-width: none; }
+      .controls { padding: 0 12px 12px; }
+      .dpad { grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(3, 44px); gap: 6px; }
+      .dpad button { width: 44px; height: 44px; }
+      .toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, 76px);
         gap: 6px;
       }
-      .dpad button { width: 44px; height: 44px; }
-      .toolbar { gap: 6px; }
-      .toolbar button { min-width: 88px; height: 44px; font-size: 10px; }
+      .toolbar button { min-width: 0; width: 76px; height: 42px; padding: 0 5px; font-size: 9px; }
+      #viewport { height: 72vh; }
     }
   </style>
 </head>
@@ -369,21 +317,21 @@
       </div>
     </header>
 
-    <section class="game-card" aria-label="Village action game">
-      <canvas id="game" width="1000" height="680" aria-label="Game world"></canvas>
+    <section class="game-card" aria-label="3D medieval exploration game">
+      <div id="viewport"></div>
 
       <div class="hud">
-        <div class="left">
+        <div class="left-stack">
           <div class="pill"><small>Day</small><strong id="dayValue">1</strong></div>
         </div>
-        <div class="right">
-          <div class="pill"><small>Location</small><strong id="locationValue">Millgate</strong></div>
+        <div class="right-stack">
+          <div class="pill"><small>Location</small><strong id="locationValue">Village</strong></div>
         </div>
       </div>
 
       <div class="questBox">
         <h2>Quest</h2>
-        <p id="questText">Speak to the village elder at the square and gather the lost relics before dusk.</p>
+        <p id="questText">Speak with the elder in the center of the village and recover the lost relics before dusk.</p>
       </div>
 
       <div class="controls">
@@ -393,11 +341,11 @@
           <button class="down" data-dir="down" aria-label="Move down">▼</button>
           <button class="right" data-dir="right" aria-label="Move right">▶</button>
         </div>
-
         <div class="toolbar">
           <button class="talk" id="talkBtn">Talk</button>
           <button class="attack" id="attackBtn">Attack</button>
-          <button class="potion" id="potionBtn">Use Potion</button>
+          <button class="potion" id="potionBtn">Potion</button>
+          <button class="camera" id="cameraBtn" aria-label="Change camera perspective" title="Change camera perspective">View: Trail</button>
         </div>
       </div>
 
@@ -405,20 +353,20 @@
         <div class="panel">
           <div class="eyebrow">A kingdom of fields and shadows</div>
           <h2 id="title">Briarfen</h2>
-          <p id="summary">Guide the hero through the villages, fend off monsters, trade with merchants, and restore the missing relics to the elder before nightfall.</p>
-          <div class="meta" id="metaText">WASD / arrows to move</div>
+          <p id="summary">Guide the hero through the villages, trade with merchants, defeat monsters, and restore the relics before nightfall.</p>
+          <div class="meta" id="metaText">WASD / arrows to move · C to change camera</div>
           <button class="startButton" id="startBtn">Begin the Journey</button>
         </div>
       </div>
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <script>
     (() => {
       'use strict';
 
-      const canvas = document.getElementById('game');
-      const ctx = canvas.getContext('2d');
+      const viewport = document.getElementById('viewport');
       const overlay = document.getElementById('overlay');
       const titleEl = document.getElementById('title');
       const summaryEl = document.getElementById('summary');
@@ -433,399 +381,639 @@
       const talkBtn = document.getElementById('talkBtn');
       const attackBtn = document.getElementById('attackBtn');
       const potionBtn = document.getElementById('potionBtn');
+      const cameraBtn = document.getElementById('cameraBtn');
 
-      const WORLD = { width: 2000, height: 1400 };
-      const MOVE_KEYS = {
-        ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
-        KeyW: 'up', KeyS: 'down', KeyA: 'left', KeyD: 'right'
-      };
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x7aa6c2);
+      scene.fog = new THREE.Fog(0x8bb0c3, 24, 120);
+
+      const camera = new THREE.PerspectiveCamera(58, viewport.clientWidth / viewport.clientHeight, 0.1, 300);
+      camera.position.set(0, 14, 20);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(viewport.clientWidth, viewport.clientHeight);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      viewport.appendChild(renderer.domElement);
+
+      const ambient = new THREE.HemisphereLight(0xdfeeff, 0x29452b, 1.3);
+      scene.add(ambient);
+
+      const sun = new THREE.DirectionalLight(0xfef1b7, 1.35);
+      sun.position.set(20, 35, 18);
+      sun.castShadow = true;
+      sun.shadow.mapSize.set(1024, 1024);
+      sun.shadow.camera.left = -45;
+      sun.shadow.camera.right = 45;
+      sun.shadow.camera.top = 45;
+      sun.shadow.camera.bottom = -45;
+      scene.add(sun);
+
+      const world = new THREE.Group();
+      scene.add(world);
+
+      const cameraViews = ['Trail', 'Iso', 'Top'];
+      let cameraView = 0;
 
       const state = {
         mode: 'menu',
-        message: 'The roads are quiet. The elders need help.',
         day: 1,
         relicsFound: 0,
-        monstersDefeated: 0,
-        win: false,
-        lastTime: 0,
         questGoal: 3,
+        message: 'The village needs you.',
         gameTime: 0,
-        cameraX: 0,
-        cameraY: 0,
-        controls: { up: false, down: false, left: false, right: false }
+        messageTime: 0,
+        lastTime: 0,
+        status: 'safe'
+      };
+
+      const input = {
+        forward: false,
+        backward: false,
+        left: false,
+        right: false
       };
 
       const player = {
-        x: 770,
-        y: 1080,
-        r: 16,
-        speed: 220,
+        group: null,
+        velocity: new THREE.Vector3(),
+        speed: 12,
+        radius: 1.5,
         health: 10,
         maxHealth: 10,
         gold: 12,
         potions: 2,
         invuln: 0,
-        facing: { x: 0, y: 1 },
         attackCooldown: 0,
         talkCooldown: 0,
-        active: true
+        facing: new THREE.Vector3(0, 0, 1)
       };
 
-      const world = {
-        trees: [],
+      const worldState = {
         houses: [],
-        lakes: [],
-        roads: [],
+        trees: [],
         villagers: [],
         merchants: [],
         animals: [],
         monsters: [],
         relics: [],
-        elder: { x: 1230, y: 855 },
-        villageCenter: { x: 1080, y: 840 }
+        elder: null,
+        lakes: []
       };
 
-      function rand(min, max) {
-        return min + Math.random() * (max - min);
-      }
+      function rand(min, max) { return min + Math.random() * (max - min); }
+      function clamp(value, min, max) { return Math.min(Math.max(value, min), max); }
+      function distance2D(a, b) { return Math.hypot(a.x - b.x, a.z - b.z); }
 
-      function clamp(value, min, max) {
-        return Math.min(Math.max(value, min), max);
-      }
-
-      function distance(a, b) {
-        return Math.hypot(a.x - b.x, a.y - b.y);
-      }
-
-      function setMessage(text) {
+      function setMessage(text, duration = 3.5) {
         state.message = text;
+        state.messageTime = duration;
         questText.textContent = text;
+      }
+
+      function refreshQuestMessage() {
+        const nearby = worldState.relics.find(r => !r.found && distance2D(player.group.position, r) < 4.2);
+        if (nearby) {
+          questText.textContent = `The ${nearby.label} glows nearby. Recover it and return to the elder.`;
+        } else {
+          questText.textContent = 'The world is quiet. Search the village and roads for the remaining relics.';
+        }
       }
 
       function updateHud() {
         healthValue.textContent = `${player.health}/${player.maxHealth}`;
+        potionBtn.textContent = `Potion · ${player.potions}`;
         goldValue.textContent = String(player.gold);
         questValue.textContent = `${state.relicsFound}/${state.questGoal}`;
         dayValue.textContent = String(state.day);
-        locationValue.textContent = getLocationName(player.x, player.y);
+        locationValue.textContent = getLocationName(player.group.position.x, player.group.position.z);
       }
 
-      function getLocationName(x, y) {
-        const distToLake = distance({ x, y }, { x: 880, y: 850 });
-        if (distToLake < 200) return 'Lakefen';
-        if (x < 980 && y > 760) return 'Millgate';
-        if (x > 1240 && y < 600) return 'Merchants';
-        if (x > 1340 && y > 880) return 'Witchwood';
-        if (x < 950 && y < 650) return 'Greythorn';
-        return 'Ridge Road';
+      function getLocationName(x, z) {
+        if (Math.hypot(x - 4, z + 25) < 13) return 'Lakefen';
+        if (x < 8 && z > 14) return 'Millgate';
+        if (x > 18 && z < -8) return 'Merchants';
+        if (x > 18 && z > 16) return 'Witchwood';
+        if (x < -18 && z < -4) return 'Greythorn';
+        return 'Village';
       }
 
-      function addHouse(x, y, w, h, color = '#d7ba7d') {
-        world.houses.push({ x, y, w, h, color });
+      function createMaterial(color, emissive = 0x000000) {
+        return new THREE.MeshStandardMaterial({ color, roughness: 0.9, metalness: 0.1, emissive });
       }
 
-      function addTree(x, y, scale = 1) {
-        world.trees.push({ x, y, scale });
+      function makePlayer() {
+        const group = new THREE.Group();
+
+        const bodyMat = createMaterial(0x9ae4ea);
+        const body = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1.0, 2.2, 7), bodyMat);
+        body.castShadow = true;
+        body.position.y = 1.6;
+        group.add(body);
+
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.7, 16, 16), createMaterial(0xf4d5b7));
+        head.castShadow = true;
+        head.position.y = 3.2;
+        group.add(head);
+
+        const hair = new THREE.Mesh(new THREE.CylinderGeometry(0.48, 0.6, 0.6, 10), createMaterial(0x3d2d23));
+        hair.position.y = 3.7;
+        hair.castShadow = true;
+        group.add(hair);
+
+        const sword = new THREE.Mesh(new THREE.BoxGeometry(0.18, 1.3, 0.18), createMaterial(0xb8c4d5));
+        sword.position.set(0.8, 1.8, 0.1);
+        sword.rotation.z = -0.9;
+        sword.castShadow = true;
+        group.add(sword);
+
+        const shield = new THREE.Mesh(new THREE.BoxGeometry(0.7, 1.0, 0.16), createMaterial(0xc2844d));
+        shield.position.set(-1.0, 1.8, 0.3);
+        shield.rotation.z = 0.2;
+        group.add(shield);
+
+        group.position.set(0, 0, 18);
+        world.add(group);
+        player.group = group;
       }
 
-      function addLake(x, y, w, h) {
-        world.lakes.push({ x, y, w, h });
+      function makeHouse(x, z, w, d, h, color = 0xd9be8d) {
+        const group = new THREE.Group();
+        const base = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), createMaterial(color));
+        base.position.y = h / 2;
+        base.castShadow = true; base.receiveShadow = true;
+        group.add(base);
+
+        const roof = new THREE.Mesh(new THREE.ConeGeometry(Math.max(w, d) * 0.8, h * 0.45, 4), createMaterial(0x8d5d34));
+        roof.position.y = h + 0.5;
+        roof.rotation.y = Math.PI / 4;
+        roof.castShadow = true;
+        group.add(roof);
+
+        const door = new THREE.Mesh(new THREE.BoxGeometry(w * 0.18, h * 0.38, 0.15), createMaterial(0x4d3825));
+        door.position.set(0, h * 0.2, d / 2 + 0.1);
+        group.add(door);
+
+        group.position.set(x, 0, z);
+        world.add(group);
+        worldState.houses.push({ group, x, z, w, d, h });
       }
 
-      function addRoad(x, y, w, h) {
-        world.roads.push({ x, y, w, h });
+      function makeTree(x, z, scale = 1) {
+        const group = new THREE.Group();
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.28 * scale, 0.4 * scale, 2.2 * scale, 10), createMaterial(0x6d4729));
+        trunk.position.y = 1.1 * scale;
+        trunk.castShadow = true;
+        group.add(trunk);
+
+        const foliage1 = new THREE.Mesh(new THREE.ConeGeometry(1.6 * scale, 3.1 * scale, 12), createMaterial(0x2d7d45));
+        foliage1.position.y = 3.8 * scale;
+        foliage1.castShadow = true;
+        group.add(foliage1);
+
+        const foliage2 = new THREE.Mesh(new THREE.ConeGeometry(1.2 * scale, 2.6 * scale, 12), createMaterial(0x377f53));
+        foliage2.position.y = 5.3 * scale;
+        foliage2.castShadow = true;
+        group.add(foliage2);
+
+        group.position.set(x, 0, z);
+        world.add(group);
+        worldState.trees.push({ group, x, z, scale });
       }
 
-      function addVillager(x, y, label, hue = '#e6d7ae') {
-        world.villagers.push({ x, y, label, hue, phase: Math.random() * 1000, dir: Math.random() * Math.PI * 2 });
+      function makeLake(x, z, w, d) {
+        const mesh = new THREE.Mesh(
+          new THREE.CylinderGeometry(w, w, 0.5, 32),
+          new THREE.MeshStandardMaterial({ color: 0x6ba9d1, transparent: true, opacity: 0.85, roughness: 0.2, metalness: 0.1 })
+        );
+        mesh.rotation.x = Math.PI / 2;
+        mesh.position.set(x, 0.05, z);
+        mesh.scale.set(1, d / w, 1);
+        mesh.receiveShadow = true;
+        world.add(mesh);
+        worldState.lakes.push(mesh);
       }
 
-      function addMerchant(x, y, label, type = 'merchant') {
-        world.merchants.push({ x, y, label, type, bob: Math.random() * 1000 });
+      function makeRoad(x, z, w, d) {
+        const road = new THREE.Mesh(new THREE.BoxGeometry(w, 0.2, d), createMaterial(0xbfa178));
+        road.position.set(x, 0.12, z);
+        road.receiveShadow = true;
+        world.add(road);
       }
 
-      function addAnimal(x, y, type = 'cow') {
-        world.animals.push({ x, y, type, dir: Math.random() * Math.PI * 2, speed: rand(18, 30), wobble: rand(0, 1000) });
+      function makeVillager(x, z, name, skin = 0xf0d5b6) {
+        const group = new THREE.Group();
+        const body = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.7, 1.8, 8), createMaterial(0x5d6d7d));
+        body.position.y = 1.1;
+        body.castShadow = true;
+        group.add(body);
+
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.48, 12, 12), createMaterial(skin));
+        head.position.y = 2.35;
+        head.castShadow = true;
+        group.add(head);
+
+        const robe = new THREE.Mesh(new THREE.ConeGeometry(0.8, 1.6, 10), createMaterial(0xc6c8c0));
+        robe.position.y = 1.6;
+        robe.rotation.x = Math.PI;
+        group.add(robe);
+
+        group.position.set(x, 0, z);
+        world.add(group);
+        worldState.villagers.push({ group, label: name, kind: 'villager', x, z, phase: rand(0, Math.PI * 2), bob: rand(0, 1000) });
       }
 
-      function addMonster(x, y, type = 'slime') {
-        world.monsters.push({ x, y, type, hp: type === 'wolf' ? 3 : 2, maxHp: type === 'wolf' ? 3 : 2, speed: type === 'wolf' ? 64 : 56, dir: rand(0, Math.PI * 2), attackCooldown: rand(0.8, 1.8), alive: true });
+      function makeMerchant(x, z, name, type = 'merchant') {
+        const group = new THREE.Group();
+        const body = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.78, 1.9, 8), createMaterial(type === 'smith' ? 0x9b8a63 : type === 'apothecary' ? 0x9abc77 : 0xd9cfab));
+        body.position.y = 1.15;
+        body.castShadow = true;
+        group.add(body);
+
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.5, 14, 14), createMaterial(0xe8d0b0));
+        head.position.y = 2.45;
+        head.castShadow = true;
+        group.add(head);
+
+        const hat = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.72, 0.6, 10), createMaterial(type === 'smith' ? 0x5f4e3f : type === 'apothecary' ? 0x7b8565 : 0x7d5d45));
+        hat.position.y = 3.05;
+        group.add(hat);
+
+        group.position.set(x, 0, z);
+        world.add(group);
+        worldState.merchants.push({ group, label: name, type, x, z, bob: rand(0, 100) });
       }
 
-      function addRelic(x, y, name) {
-        world.relics.push({ x, y, name, found: false, pulse: Math.random() * Math.PI * 2 });
+      function makeAnimal(x, z, type = 'cow') {
+        const group = new THREE.Group();
+        const bodyColor = type === 'cow' ? 0xf8f3ef : 0xc9d5e0;
+        const body = new THREE.Mesh(new THREE.BoxGeometry(type === 'cow' ? 2.4 : 1.8, 1.1, 1.4), createMaterial(bodyColor));
+        body.position.y = 1.1;
+        body.castShadow = true;
+        group.add(body);
+
+        const head = new THREE.Mesh(new THREE.BoxGeometry(type === 'cow' ? 0.8 : 0.7, 0.7, 0.7), createMaterial(bodyColor));
+        head.position.set(type === 'cow' ? 1.4 : 1.1, 1.5, 0);
+        head.castShadow = true;
+        group.add(head);
+
+        group.position.set(x, 0, z);
+        world.add(group);
+        worldState.animals.push({ group, type, x, z, dir: rand(0, Math.PI * 2), speed: rand(2.5, 4.8), wobble: rand(0, 1000) });
+      }
+
+      function makeMonster(x, z, type = 'slime') {
+        const group = new THREE.Group();
+        const bodyColor = type === 'wolf' ? 0x8a564d : 0x79b76f;
+        const body = new THREE.Mesh(new THREE.SphereGeometry(type === 'wolf' ? 1.1 : 1.4, 12, 12), createMaterial(bodyColor));
+        body.position.y = 1.4;
+        body.castShadow = true;
+        group.add(body);
+
+        const eyeMat = createMaterial(0xf7eae5, 0x2c1c18);
+        const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), eyeMat);
+        leftEye.position.set(-0.35, 1.6, 0.9);
+        group.add(leftEye);
+        const rightEye = leftEye.clone();
+        rightEye.position.x = 0.35;
+        group.add(rightEye);
+
+        group.position.set(x, 0, z);
+        world.add(group);
+        worldState.monsters.push({ group, type, hp: type === 'wolf' ? 3 : 2, maxHp: type === 'wolf' ? 3 : 2, x, z, speed: type === 'wolf' ? 6.2 : 4.5, dir: rand(0, Math.PI * 2), attackCd: rand(1, 2.4), alive: true });
+      }
+
+      function makeRelic(x, z, label) {
+        const group = new THREE.Group();
+        const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.8, 0), new THREE.MeshStandardMaterial({ color: 0xf5d37e, emissive: 0x7d5b0d, roughness: 0.25, metalness: 0.6 }));
+        gem.position.y = 1.2;
+        gem.castShadow = true;
+        group.add(gem);
+
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.14, 8, 20), new THREE.MeshStandardMaterial({ color: 0xfde7b0, emissive: 0x513b0c, roughness: 0.4 }));
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = 0.3;
+        group.add(ring);
+
+        group.position.set(x, 0, z);
+        world.add(group);
+        worldState.relics.push({ group, label, x, z, found: false, pulse: rand(0, Math.PI * 2) });
+      }
+
+      function makeElder(x, z) {
+        const group = new THREE.Group();
+        const robe = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.9, 1.8, 8), createMaterial(0xb7bdca));
+        robe.position.y = 1.1;
+        robe.castShadow = true;
+        group.add(robe);
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.52, 14, 14), createMaterial(0xf3d3b0));
+        head.position.y = 2.45;
+        group.add(head);
+        const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.75, 0.35, 8), createMaterial(0xf5d27f));
+        crown.position.y = 3.0;
+        group.add(crown);
+        group.position.set(x, 0, z);
+        world.add(group);
+        worldState.elder = { group, x, z };
       }
 
       function buildWorld() {
-        world.trees = [];
-        world.houses = [];
-        world.lakes = [];
-        world.roads = [];
-        world.villagers = [];
-        world.merchants = [];
-        world.animals = [];
-        world.monsters = [];
-        world.relics = [];
+        // ground
+        const ground = new THREE.Mesh(
+          new THREE.PlaneGeometry(120, 120),
+          new THREE.MeshStandardMaterial({ color: 0x7ea76a, roughness: 0.96, metalness: 0.02 })
+        );
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        world.add(ground);
 
-        addLake(730, 760, 370, 260);
-        addRoad(540, 650, 820, 120);
-        addRoad(980, 540, 150, 600);
-        addRoad(1200, 880, 560, 140);
+        // roads
+        makeRoad(0, 0, 36, 8);
+        makeRoad(0, 18, 8, 36);
+        makeRoad(18, 12, 8, 34);
+        makeRoad(-20, 0, 8, 46);
 
-        for (let i = 0; i < 70; i++) {
-          addTree(rand(60, 1850), rand(80, 1300), rand(0.8, 1.4));
+        // lake
+        makeLake(19, -26, 9, 18);
+
+        // houses around village square
+        makeHouse(-8, 5, 7, 6, 4, 0xd4b77e);
+        makeHouse(0, 8, 8, 7, 4.5, 0xd5bb82);
+        makeHouse(9, 6, 7, 6, 4.4, 0xceb185);
+        makeHouse(-8, -7, 7, 6, 4.2, 0xd2ad69);
+        makeHouse(7, -8, 7, 6, 4.3, 0xdfc18a);
+        makeHouse(0, -14, 8, 6, 4.7, 0xd3b177);
+
+        // outlying houses
+        makeHouse(-19, -18, 7, 6, 4, 0xd9c48a);
+        makeHouse(18, 20, 7, 6, 4.3, 0xdac38e);
+        makeHouse(22, -17, 8, 6, 4.1, 0xf0d9aa);
+        makeHouse(-22, 22, 7, 6, 4.1, 0xd4b692);
+
+        // trees
+        for (let i = 0; i < 26; i++) {
+          makeTree(rand(-32, 32), rand(-32, 32), rand(0.8, 1.6));
         }
 
-        const villageX = 1080;
-        const villageY = 820;
-        addHouse(villageX - 150, villageY - 120, 110, 80, '#d4b57b');
-        addHouse(villageX - 20, villageY - 140, 120, 90, '#d1b37d');
-        addHouse(villageX + 140, villageY - 100, 130, 90, '#c9a875');
-        addHouse(villageX - 150, villageY + 70, 120, 90, '#d5b888');
-        addHouse(villageX + 30, villageY + 60, 110, 90, '#c7a470');
-        addHouse(villageX + 160, villageY + 80, 120, 90, '#d0a777');
+        // villagers and merchants
+        makeVillager(-4, 3, 'Edda');
+        makeVillager(3, 8, 'Mera');
+        makeVillager(10, 1, 'Tobin');
+        makeVillager(-5, -10, 'Ivo');
+        makeVillager(6, -14, 'Lysa');
+        makeVillager(14, -6, 'Joren');
+        makeVillager(-16, 15, 'Selma');
+        makeVillager(18, 12, 'Nessa');
 
-        addHouse(315, 610, 150, 110, '#dfc890');
-        addHouse(475, 1030, 150, 110, '#d8b88a');
-        addHouse(1320, 400, 150, 100, '#cfb36e');
-        addHouse(1700, 1160, 170, 110, '#d5b680');
+        makeMerchant(-10, 18, 'Fenn the Trader', 'merchant');
+        makeMerchant(12, 19, 'Jek the Smith', 'smith');
+        makeMerchant(17, -11, 'Mara the Apothecary', 'apothecary');
 
-        addVillager(1020, 820, 'Edda');
-        addVillager(1080, 780, 'Mera');
-        addVillager(1200, 900, 'Tobin');
-        addVillager(1160, 990, 'Ivo');
-        addVillager(920, 870, 'Selma');
-        addVillager(1000, 1000, 'Joren');
-        addVillager(1320, 760, 'Lysa');
-        addVillager(1450, 960, 'Darrin');
-        addVillager(1650, 980, 'Nessa');
+        // animals
+        makeAnimal(-16, -4, 'cow');
+        makeAnimal(-11, -16, 'cow');
+        makeAnimal(14, 12, 'sheep');
+        makeAnimal(20, 18, 'sheep');
+        makeAnimal(-12, 13, 'cow');
+        makeAnimal(1, -20, 'sheep');
 
-        addMerchant(1220, 500, 'Fenn the Trader', 'trader');
-        addMerchant(1420, 470, 'Jek the Smith', 'smith');
-        addMerchant(1530, 1050, 'Mara the Apothecary', 'apothecary');
+        // monsters
+        makeMonster(-20, 6, 'slime');
+        makeMonster(16, -23, 'slime');
+        makeMonster(22, 6, 'wolf');
+        makeMonster(-12, 23, 'wolf');
+        makeMonster(8, 26, 'slime');
+        makeMonster(2, -30, 'slime');
 
-        addAnimal(680, 1040, 'cow');
-        addAnimal(690, 1120, 'cow');
-        addAnimal(930, 1110, 'sheep');
-        addAnimal(1300, 1160, 'cow');
-        addAnimal(1480, 930, 'sheep');
-        addAnimal(1710, 740, 'sheep');
-        addAnimal(1450, 1215, 'cow');
+        // relics
+        makeRelic(-22, -2, 'Sunstone');
+        makeRelic(20, 24, 'Moonglass');
+        makeRelic(22, -28, 'Crown of Briar');
 
-        addMonster(760, 360, 'slime');
-        addMonster(990, 410, 'slime');
-        addMonster(1280, 330, 'wolf');
-        addMonster(1560, 650, 'slime');
-        addMonster(1710, 930, 'wolf');
-        addMonster(1180, 1180, 'slime');
-
-        addRelic(800, 610, 'Sunstone');
-        addRelic(1480, 1180, 'Moonglass');
-        addRelic(1750, 430, 'Crown of Briar');
+        // elder
+        makeElder(0, 0);
       }
 
-      function resetGame() {
-        buildWorld();
-        player.x = 770;
-        player.y = 1080;
-        player.health = 10;
-        player.maxHealth = 10;
+      function resetWorld() {
+        while (world.children.length) {
+          const child = world.children.pop();
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) child.material.dispose();
+        }
+        worldState.houses = [];
+        worldState.trees = [];
+        worldState.villagers = [];
+        worldState.merchants = [];
+        worldState.animals = [];
+        worldState.monsters = [];
+        worldState.relics = [];
+        worldState.lakes = [];
+        worldState.elder = null;
+
+        player.health = player.maxHealth;
         player.gold = 12;
         player.potions = 2;
         player.invuln = 0;
         player.attackCooldown = 0;
         player.talkCooldown = 0;
-        state.message = 'The road is clear. Help the elder and recover the relics.';
-        state.relicsFound = 0;
-        state.monstersDefeated = 0;
+        player.group.position.set(0, 0, 18);
+
         state.day = 1;
-        state.win = false;
-        beginnerQuest();
+        state.gameTime = 0;
+        state.messageTime = 0;
+        state.relicsFound = 0;
+        state.status = 'battle';
+        buildWorld();
         updateHud();
       }
 
-      function beginnerQuest() {
-        setMessage('The elder asks for the lost relics. Begin at the village square and visit the merchants.');
-      }
-
-      function startGame() {
-        resetGame();
-        state.mode = 'playing';
-        overlay.classList.add('hidden');
-        setMessage('Talk to the elder and gather the relics hidden across Briarfen.');
-      }
-
-      function showEndScreen(title, description, meta) {
+      function showOverlay(title, summary, meta) {
         titleEl.textContent = title;
-        summaryEl.textContent = description;
+        summaryEl.textContent = summary;
         metaEl.textContent = meta;
         overlay.classList.remove('hidden');
       }
 
-      function makeMessageForNearby() {
-        const elderDist = distance(player, world.elder);
-        if (elderDist < 60) {
-          if (state.relicsFound >= state.questGoal) {
-            setMessage('The elder is overjoyed. The town is safe again!');
-            state.win = true;
-            state.mode = 'done';
-            showEndScreen('Village Safe', 'The relics are restored to the town and the people of Briarfen celebrate your victory.', 'You completed all relic quests.');
-            return true;
-          }
-          setMessage('The elder says: "Recover the three relics and bring them here before dusk."');
-          return true;
-        }
-
-        for (const merchant of world.merchants) {
-          if (distance(player, merchant) < 48) {
-            if (merchant.type === 'trader') {
-              setMessage('The trader says: "These roads are rife with monsters. Seek the relics in the lake and the ruins."');
-            } else if (merchant.type === 'smith') {
-              setMessage('The smith says: "The wolf packs grow bolder. A blade in hand keeps the village safe."');
-            } else {
-              setMessage('The apothecary says: "Take a potion. A strong heart makes the wild kinder."');
-              player.potions += 1;
-              player.gold = Math.max(0, player.gold - 2);
-            }
-            updateHud();
-            return true;
-          }
-        }
-
-        for (const villager of world.villagers) {
-          if (distance(player, villager) < 44) {
-            setMessage(`${villager.label} says: "Stay on the roads and watch the shadows."`);
-            return true;
-          }
-        }
-
-        return false;
+      function startGame() {
+        resetWorld();
+        state.mode = 'playing';
+        overlay.classList.add('hidden');
+        setMessage('The elder calls for the relics. Search the village and the roads for the missing treasures.');
       }
 
       function handleTalk() {
         if (state.mode !== 'playing') return;
         if (player.talkCooldown > 0) return;
-        player.talkCooldown = 0.35;
-        if (makeMessageForNearby()) return;
-        setMessage('No one is close enough to speak with. The village is nearby, and the road runs west.');
+        player.talkCooldown = 0.3;
+
+        const elderDist = distance2D(player.group.position, worldState.elder);
+        if (elderDist < 4.5) {
+          if (state.relicsFound >= state.questGoal) {
+            state.mode = 'won';
+            setMessage('The elder lifts the relics to the sky as the villagers cheer. Briarfen is safe once more.');
+            showOverlay('Victory', 'The relics are restored to the village and the kingdom breathes again.', 'Quest complete — the village is saved');
+            return;
+          }
+          setMessage('The elder says: "Three relics were lost across Briarfen. Bring them back before dusk."');
+          return;
+        }
+
+        for (const merchant of worldState.merchants) {
+          if (distance2D(player.group.position, merchant) < 4) {
+            if (merchant.type === 'smith') {
+              setMessage('The smith says: "A strong blade can keep the wolves away."');
+            } else if (merchant.type === 'apothecary') {
+              player.potions += 1;
+              setMessage('The apothecary hands you a fresh potion. The village will need it.');
+            } else {
+              setMessage('The trader says: "The roads are dangerous. Search the lake, village, and far fields."');
+            }
+            updateHud();
+            return;
+          }
+        }
+
+        for (const villager of worldState.villagers) {
+          if (distance2D(player.group.position, villager) < 4) {
+            setMessage(`${villager.label} says: "Stay on the road and keep the monsters away."`);
+            return;
+          }
+        }
+
+        setMessage('No one is close enough to talk. Search the village square and roads.');
       }
 
       function usePotion() {
         if (state.mode !== 'playing') return;
         if (player.potions <= 0) {
-          setMessage('Your satchel is empty. The apothecary can refill it.');
+          setMessage('Your satchel is empty. Talk to the apothecary for another bottle.');
           return;
         }
         player.potions -= 1;
         player.health = Math.min(player.maxHealth, player.health + 4);
-        setMessage('You drink a health potion and steady your breath.');
+        setMessage('You drink a healing potion and steady your breath.');
         updateHud();
       }
 
       function attackNearestMonster() {
         if (state.mode !== 'playing') return;
         if (player.attackCooldown > 0) return;
-        player.attackCooldown = 0.4;
+        player.attackCooldown = 0.45;
 
         let hit = false;
-        for (const monster of world.monsters) {
+        let didKill = false;
+
+        for (const monster of worldState.monsters) {
           if (!monster.alive) continue;
-          if (distance(player, monster) < 62) {
+          if (distance2D(player.group.position, monster) < 4.1) {
             monster.hp -= 1;
             hit = true;
             if (monster.hp <= 0) {
               monster.alive = false;
-              state.monstersDefeated += 1;
-              setMessage('A monster falls to the blade. The road feels safer.');
-            } else {
-              setMessage('Your blade cuts deep. The beast reels but still stands.');
+              monster.group.visible = false;
+              state.status = 'safe';
+              didKill = true;
             }
           }
         }
 
         if (!hit) {
-          setMessage('Your swing cuts through empty air. The monsters are nearby, though.');
+          setMessage('Your blade swings through the air. A monster lurks nearby.');
+        } else if (didKill) {
+          setMessage('A monster collapses beneath your blade. The village breathes easier.');
+        } else {
+          setMessage('The attack lands. The beast staggers back.');
         }
-
-        updateHud();
       }
 
       function collectRelics() {
-        for (const relic of world.relics) {
-          if (!relic.found && distance(player, relic) < 30) {
+        for (const relic of worldState.relics) {
+          if (!relic.found && distance2D(player.group.position, relic) < 3.2) {
             relic.found = true;
+            relic.group.visible = false;
             state.relicsFound += 1;
             player.gold += 5;
-            setMessage(`You recovered the ${relic.name}. The town grows hopeful.`);
-            if (state.relicsFound >= state.questGoal && distance(player, world.elder) < 80) {
-              setMessage('The elder waits at the square. Return the relics to complete the quest.');
-            }
+            setMessage(`You recovered the ${relic.label}. The village grows hopeful.`);
             updateHud();
           }
         }
       }
 
       function updateMovement(dt) {
-        let dx = 0;
-        let dy = 0;
+        const dir = new THREE.Vector3();
 
-        if (state.controls.left) dx -= 1;
-        if (state.controls.right) dx += 1;
-        if (state.controls.up) dy -= 1;
-        if (state.controls.down) dy += 1;
+        if (input.left) dir.x -= 1;
+        if (input.right) dir.x += 1;
+        if (input.forward) dir.z -= 1;
+        if (input.backward) dir.z += 1;
 
-        if (dx !== 0 || dy !== 0) {
-          const len = Math.hypot(dx, dy) || 1;
-          dx /= len; dy /= len;
-          const speed = player.speed * dt;
-          player.x += dx * speed;
-          player.y += dy * speed;
-          player.facing.x = dx;
-          player.facing.y = dy;
+        if (dir.lengthSq() > 0) {
+          dir.normalize();
+          player.velocity.x = dir.x * player.speed;
+          player.velocity.z = dir.z * player.speed;
+          player.facing.copy(dir);
+        } else {
+          player.velocity.x *= 0.7;
+          player.velocity.z *= 0.7;
         }
 
-        player.x = clamp(player.x, 40, WORLD.width - 40);
-        player.y = clamp(player.y, 40, WORLD.height - 40);
+        const nextX = player.group.position.x + player.velocity.x * dt;
+        const nextZ = player.group.position.z + player.velocity.z * dt;
+        player.group.position.x = clamp(nextX, -38, 38);
+        player.group.position.z = clamp(nextZ, -38, 38);
+
+        if (player.velocity.lengthSq() > 0.01) {
+          player.group.rotation.y = Math.atan2(player.velocity.x, player.velocity.z);
+        }
       }
 
       function updateAnimals(dt) {
-        for (const animal of world.animals) {
+        for (const animal of worldState.animals) {
           animal.x += Math.cos(animal.dir) * animal.speed * dt;
-          animal.y += Math.sin(animal.dir) * animal.speed * dt;
-          if (animal.x < 40 || animal.x > WORLD.width - 40 || animal.y < 40 || animal.y > WORLD.height - 40) {
+          animal.z += Math.sin(animal.dir) * animal.speed * dt;
+          if (animal.x < -36 || animal.x > 36 || animal.z < -36 || animal.z > 36) {
             animal.dir += Math.PI * 0.8;
           }
-          animal.dir += Math.sin((state.gameTime + animal.wobble) * 0.7) * 0.012;
+          animal.dir += Math.sin(state.gameTime + animal.wobble) * 0.02;
+          animal.group.position.x = animal.x;
+          animal.group.position.z = animal.z;
+          animal.group.position.y = 0.08 + Math.sin(state.gameTime * 6 + animal.wobble) * 0.06;
         }
       }
 
       function updateMonsters(dt) {
-        for (const monster of world.monsters) {
+        for (const monster of worldState.monsters) {
           if (!monster.alive) continue;
-          const dx = player.x - monster.x;
-          const dy = player.y - monster.y;
-          const dist = Math.hypot(dx, dy) || 1;
 
-          if (dist < 260) {
+          const dx = player.group.position.x - monster.x;
+          const dz = player.group.position.z - monster.z;
+          const dist = Math.hypot(dx, dz) || 1;
+
+          if (dist < 22) {
             monster.x += (dx / dist) * monster.speed * dt;
-            monster.y += (dy / dist) * monster.speed * dt;
+            monster.z += (dz / dist) * monster.speed * dt;
           } else {
-            monster.x += Math.cos(monster.dir) * 25 * dt;
-            monster.y += Math.sin(monster.dir) * 25 * dt;
+            monster.x += Math.cos(monster.dir) * 2.5 * dt;
+            monster.z += Math.sin(monster.dir) * 2.5 * dt;
             if (Math.random() < 0.02) monster.dir += rand(-1.5, 1.5);
           }
 
-          if (dist < player.r + 18) {
-            monster.attackCooldown -= dt;
-            if (monster.attackCooldown <= 0) {
-              monster.attackCooldown = 0.9 + Math.random() * 0.8;
+          monster.group.position.x = monster.x;
+          monster.group.position.z = monster.z;
+          monster.group.position.y = 0.2 + Math.sin(state.gameTime * 7 + monster.x) * 0.15;
+
+          if (dist < 2.5) {
+            monster.attackCd -= dt;
+            if (monster.attackCd <= 0) {
+              monster.attackCd = 1.1 + Math.random() * 0.8;
               if (player.invuln <= 0) {
                 player.health -= 1;
-                player.invuln = 1.2;
-                setMessage('A monster strikes! Hold your ground and keep moving.');
+                player.invuln = 1.1;
+                setMessage('A monster hits you! Keep moving and strike back.');
                 if (player.health <= 0) {
                   state.mode = 'lost';
-                  showEndScreen('The Village Falls Silent', 'The monsters overwhelmed you before the relics were recovered. The road will need another hero.', 'Try again and protect the villages.');
+                  showOverlay('The Road Wins', 'The monsters overwhelmed you before the relics were recovered. Try another run.', 'The village needs another hero.');
                 }
               }
             }
@@ -833,18 +1021,46 @@
         }
       }
 
-      function updateRelicPrompt() {
-        const nearbyRelic = world.relics.find(r => !r.found && distance(player, r) < 80);
-        if (nearbyRelic) {
-          setMessage(`The ${nearbyRelic.name} glows nearby. Gather it and return to the elder.`);
-        } else if (!state.win && state.mode === 'playing') {
-          setMessage('The road is quiet, but the relics are still hidden. Keep moving.');
+      function updateVillagers(dt) {
+        for (const villager of worldState.villagers) {
+          const bob = Math.sin(state.gameTime * 3 + villager.phase) * 0.1;
+          villager.group.position.y = bob;
+        }
+        for (const merchant of worldState.merchants) {
+          merchant.group.position.y = Math.sin(state.gameTime * 3 + merchant.bob) * 0.15;
         }
       }
 
-      function update(dt) {
+      function updateRelics() {
+        if (state.messageTime <= 0) refreshQuestMessage();
+      }
+
+      function cycleCamera() {
+        cameraView = (cameraView + 1) % cameraViews.length;
+        const viewName = cameraViews[cameraView];
+        cameraBtn.textContent = `View: ${viewName}`;
+        cameraBtn.setAttribute('aria-label', `Camera perspective: ${viewName}`);
+        cameraBtn.title = `Camera perspective: ${viewName}`;
+      }
+
+      function updateCamera() {
+        let offset;
+        if (cameraView === 1) {
+          offset = new THREE.Vector3(14, 20, 16);
+        } else if (cameraView === 2) {
+          offset = new THREE.Vector3(0, 32, 8);
+        } else {
+          offset = new THREE.Vector3(player.facing.x * 6, 10.5, player.facing.z * 8);
+        }
+        const desired = player.group.position.clone().add(offset);
+        camera.position.lerp(desired, 0.08);
+        camera.lookAt(player.group.position.x, 1.5, player.group.position.z);
+      }
+
+      function updateState(dt) {
         if (state.mode !== 'playing') return;
         state.gameTime += dt;
+        state.messageTime = Math.max(0, state.messageTime - dt);
         player.invuln = Math.max(0, player.invuln - dt);
         player.attackCooldown = Math.max(0, player.attackCooldown - dt);
         player.talkCooldown = Math.max(0, player.talkCooldown - dt);
@@ -852,263 +1068,33 @@
         updateMovement(dt);
         updateAnimals(dt);
         updateMonsters(dt);
+        updateVillagers(dt);
         collectRelics();
-        updateRelicPrompt();
+        updateRelics();
         updateHud();
+
+        const elderDist = distance2D(player.group.position, worldState.elder);
+        if (state.relicsFound >= state.questGoal && elderDist < 4) {
+          state.mode = 'won';
+          setMessage('The elder and the villagers thank you. Briarfen is safe.');
+          showOverlay('Village Saved', 'The relics are restored, the monsters retreat, and the people cheer for the champion of Briarfen.', 'Quest complete — all relics recovered');
+        }
       }
 
-      function drawGround() {
-        ctx.fillStyle = '#6eaf66';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        for (let x = -40; x < canvas.width + 40; x += 80) {
-          for (let y = -40; y < canvas.height + 40; y += 80) {
-            ctx.fillStyle = (Math.floor((x + y) / 80) % 2 === 0) ? '#7fb873' : '#74aa66';
-            ctx.fillRect(x, y, 80, 80);
+      function animateRelics() {
+        for (const relic of worldState.relics) {
+          if (!relic.found) {
+            relic.group.rotation.y += 0.03;
+            relic.group.position.y = Math.sin(state.gameTime * 4 + relic.pulse) * 0.5 + 0.5;
           }
         }
       }
 
-      function drawLake() {
-        for (const lake of world.lakes) {
-          const sx = lake.x - state.cameraX;
-          const sy = lake.y - state.cameraY;
-          const shimmer = 0.96 + Math.sin(state.gameTime * 2.2 + lake.x * 0.03) * 0.08;
-          ctx.fillStyle = `rgba(80, 158, 198, ${shimmer})`;
-          ctx.beginPath();
-          ctx.ellipse(sx + lake.w / 2, sy + lake.h / 2, lake.w / 2, lake.h / 2, 0, 0, Math.PI * 2);
-          ctx.fill();
-
-          ctx.strokeStyle = 'rgba(220,245,255,0.42)';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.ellipse(sx + lake.w / 2, sy + lake.h / 2, lake.w / 2, lake.h / 2, 0, 0, Math.PI * 2);
-          ctx.stroke();
-        }
-      }
-
-      function drawRoad() {
-        for (const road of world.roads) {
-          const sx = road.x - state.cameraX;
-          const sy = road.y - state.cameraY;
-          ctx.fillStyle = '#bba472';
-          ctx.fillRect(sx, sy, road.w, road.h);
-          ctx.strokeStyle = 'rgba(120,96,54,0.4)';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(sx + 12, sy + road.h / 2);
-          ctx.lineTo(sx + road.w - 12, sy + road.h / 2);
-          ctx.stroke();
-        }
-      }
-
-      function drawTree(tree) {
-        const x = tree.x - state.cameraX;
-        const y = tree.y - state.cameraY;
-        const s = tree.scale;
-
-        ctx.fillStyle = '#6d4728';
-        ctx.fillRect(x - 5 * s, y + 18 * s, 10 * s, 26 * s);
-
-        ctx.fillStyle = '#2d7a49';
-        ctx.beginPath();
-        ctx.arc(x, y + 8 * s, 22 * s, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(x - 18 * s, y + 18 * s, 16 * s, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(x + 18 * s, y + 18 * s, 16 * s, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      function drawHouse(house) {
-        const x = house.x - state.cameraX;
-        const y = house.y - state.cameraY;
-
-        ctx.fillStyle = house.color;
-        ctx.fillRect(x, y, house.w, house.h);
-        ctx.fillStyle = '#9a6f3b';
-        ctx.beginPath();
-        ctx.moveTo(x - 8, y);
-        ctx.lineTo(x + house.w / 2, y - 26);
-        ctx.lineTo(x + house.w + 8, y);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#7d8d93';
-        ctx.fillRect(x + 18, y + 24, 24, 32);
-        ctx.fillRect(x + house.w - 42, y + 24, 24, 32);
-      }
-
-      function drawVillager(v) {
-        const x = v.x - state.cameraX;
-        const y = v.y - state.cameraY;
-        const bob = Math.sin(state.gameTime * 2 + v.phase) * 2;
-
-        ctx.fillStyle = '#2b3d45';
-        ctx.fillRect(x - 5, y + 10 + bob, 10, 10);
-        ctx.fillStyle = v.hue;
-        ctx.beginPath();
-        ctx.arc(x, y + bob, 9, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#3a2d22';
-        ctx.fillRect(x - 3, y + 10 + bob, 6, 12);
-      }
-
-      function drawMerchant(m) {
-        const x = m.x - state.cameraX;
-        const y = m.y - state.cameraY;
-        const bob = Math.sin(state.gameTime * 2 + m.bob) * 2;
-        ctx.fillStyle = '#5c4d42';
-        ctx.fillRect(x - 4, y + 12 + bob, 8, 11);
-        ctx.fillStyle = m.type === 'smith' ? '#bbad7d' : (m.type === 'apothecary' ? '#cbe7b4' : '#e0d9be');
-        ctx.beginPath();
-        ctx.arc(x, y + bob, 9, 0, Math.PI * 2);
-        ctx.fill();
-
-        if (m.type === 'trader') {
-          ctx.fillStyle = '#d68a42';
-          ctx.fillRect(x - 14, y + 18 + bob, 28, 10);
-        }
-      }
-
-      function drawAnimal(a) {
-        const x = a.x - state.cameraX;
-        const y = a.y - state.cameraY;
-        const bob = Math.sin(state.gameTime * 3 + a.wobble) * 2;
-        ctx.fillStyle = a.type === 'cow' ? '#f1f1f1' : '#c8d7df';
-        ctx.beginPath();
-        ctx.ellipse(x, y + bob, 12, 9, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#2d2d2d';
-        ctx.fillRect(x - 8, y - 4 + bob, 3, 8);
-        ctx.fillRect(x + 5, y - 4 + bob, 3, 8);
-      }
-
-      function drawMonster(m) {
-        if (!m.alive) return;
-        const x = m.x - state.cameraX;
-        const y = m.y - state.cameraY;
-        ctx.fillStyle = m.type === 'wolf' ? '#a35a58' : '#7bb976';
-        ctx.beginPath();
-        ctx.arc(x, y, m.type === 'wolf' ? 14 : 13, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#f5e6d6';
-        ctx.beginPath();
-        ctx.arc(x - 3, y - 2, 2, 0, Math.PI * 2);
-        ctx.arc(x + 3, y - 2, 2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      function drawRelic(r) {
-        if (r.found) return;
-        const x = r.x - state.cameraX;
-        const y = r.y - state.cameraY;
-        const pulse = 0.7 + Math.sin(state.gameTime * 3 + r.pulse) * 0.4;
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(state.gameTime * 1.4 + r.pulse);
-        ctx.fillStyle = `rgba(255, 215, 128, ${pulse})`;
-        ctx.beginPath();
-        ctx.moveTo(0, -12);
-        ctx.lineTo(10, 0);
-        ctx.lineTo(0, 12);
-        ctx.lineTo(-10, 0);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-      }
-
-      function drawElder() {
-        const x = world.elder.x - state.cameraX;
-        const y = world.elder.y - state.cameraY;
-        ctx.fillStyle = '#d6d0d0';
-        ctx.fillRect(x - 8, y + 12, 16, 12);
-        ctx.fillStyle = '#f5d4b8';
-        ctx.beginPath();
-        ctx.arc(x, y, 10, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#8b4d39';
-        ctx.fillRect(x - 8, y - 8, 16, 10);
-      }
-
-      function drawPlayer() {
-        const x = player.x - state.cameraX;
-        const y = player.y - state.cameraY;
-        const invulnBlink = player.invuln > 0 && Math.floor(player.invuln * 18) % 2 === 0;
-        if (invulnBlink) return;
-
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(Math.atan2(player.facing.y, player.facing.x) + Math.PI / 2);
-
-        ctx.fillStyle = '#9ae0f0';
-        ctx.beginPath();
-        ctx.moveTo(0, -18);
-        ctx.lineTo(11, 10);
-        ctx.lineTo(0, 6);
-        ctx.lineTo(-11, 10);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#4d6d88';
-        ctx.fillRect(-4, 5, 8, 12);
-
-        ctx.fillStyle = '#d8b784';
-        ctx.fillRect(-5, -6, 10, 10);
-        ctx.restore();
-      }
-
-      function drawMiniMapHint() {
-        const active = world.relics.some(r => !r.found) ? 'Recover relics' : 'Return home';
-        ctx.fillStyle = 'rgba(8, 18, 18, 0.55)';
-        ctx.fillRect(canvas.width - 170, 15, 150, 56);
-        ctx.strokeStyle = 'rgba(143,234,242,0.3)';
-        ctx.strokeRect(canvas.width - 170, 15, 150, 56);
-        ctx.fillStyle = '#d8f5ff';
-        ctx.font = '700 12px sans-serif';
-        ctx.fillText('Objective', canvas.width - 150, 34);
-        ctx.fillStyle = '#f1d48d';
-        ctx.font = '600 11px sans-serif';
-        ctx.fillText(active, canvas.width - 150, 52);
-      }
-
-      function updateCamera() {
-        state.cameraX = clamp(player.x - canvas.width / 2, 0, WORLD.width - canvas.width);
-        state.cameraY = clamp(player.y - canvas.height / 2, 0, WORLD.height - canvas.height);
-      }
-
-      function draw() {
+      function render() {
+        updateState(1/60);
+        animateRelics();
         updateCamera();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawGround();
-        drawLake();
-        drawRoad();
-        for (const house of world.houses) drawHouse(house);
-        for (const tree of world.trees) drawTree(tree);
-        for (const villager of world.villagers) drawVillager(villager);
-        for (const merchant of world.merchants) drawMerchant(merchant);
-        for (const animal of world.animals) drawAnimal(animal);
-        for (const monster of world.monsters) drawMonster(monster);
-        for (const relic of world.relics) drawRelic(relic);
-        drawElder();
-        drawPlayer();
-        drawMiniMapHint();
-      }
-
-      function loop(now) {
-        const dt = Math.min(0.033, (now - state.lastTime) / 1000 || 0.016);
-        state.lastTime = now;
-        update(dt);
-        draw();
-        requestAnimationFrame(loop);
-      }
-
-      function setControl(direction, value) {
-        state.controls[direction] = value;
+        renderer.render(scene, camera);
       }
 
       function bindButton(button) {
@@ -1116,11 +1102,17 @@
         if (!dir) return;
         const press = (event) => {
           event.preventDefault();
-          setControl(dir, true);
+          if (dir === 'up') input.forward = true;
+          if (dir === 'down') input.backward = true;
+          if (dir === 'left') input.left = true;
+          if (dir === 'right') input.right = true;
         };
         const release = (event) => {
           event.preventDefault();
-          setControl(dir, false);
+          if (dir === 'up') input.forward = false;
+          if (dir === 'down') input.backward = false;
+          if (dir === 'left') input.left = false;
+          if (dir === 'right') input.right = false;
         };
         button.addEventListener('pointerdown', press);
         button.addEventListener('pointerup', release);
@@ -1133,28 +1125,56 @@
       talkBtn.addEventListener('click', handleTalk);
       attackBtn.addEventListener('click', attackNearestMonster);
       potionBtn.addEventListener('click', usePotion);
+      cameraBtn.addEventListener('click', cycleCamera);
       startBtn.addEventListener('click', startGame);
 
+      const MOVE_KEYS = {
+        ArrowUp: 'forward', ArrowDown: 'backward', ArrowLeft: 'left', ArrowRight: 'right',
+        KeyW: 'forward', KeyS: 'backward', KeyA: 'left', KeyD: 'right'
+      };
+
       window.addEventListener('keydown', (event) => {
-        const dir = MOVE_KEYS[event.code];
-        if (dir) {
+        const key = MOVE_KEYS[event.code];
+        if (key) {
           event.preventDefault();
-          setControl(dir, true);
+          input[key] = true;
         }
         if (event.code === 'KeyE') handleTalk();
         if (event.code === 'KeyF') attackNearestMonster();
         if (event.code === 'KeyQ') usePotion();
+        if (event.code === 'KeyC') cycleCamera();
       });
 
       window.addEventListener('keyup', (event) => {
-        const dir = MOVE_KEYS[event.code];
-        if (dir) setControl(dir, false);
+        const key = MOVE_KEYS[event.code];
+        if (key) input[key] = false;
       });
 
-      resetGame();
+      window.addEventListener('resize', () => {
+        camera.aspect = viewport.clientWidth / viewport.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(viewport.clientWidth, viewport.clientHeight);
+      });
+
+      function tick(now) {
+        const dt = Math.min(0.033, (now - (tick.last || now)) / 1000 || 0.016);
+        tick.last = now;
+
+        if (state.mode === 'playing') {
+          updateState(dt);
+        }
+        animateRelics();
+        updateCamera();
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+
+      makePlayer();
+      resetWorld();
       updateHud();
-      draw();
-      requestAnimationFrame(loop);
+      setMessage('The elder is waiting in the village square. Gather the relics and keep the town safe.');
+      showOverlay('Briarfen', 'Guide the hero through the villages, trade with merchants, defeat monsters, and restore the relics before nightfall.', 'WASD / arrows to move · C to change camera');
     })();
   </script>
 </body>
