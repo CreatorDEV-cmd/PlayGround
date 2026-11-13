@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <title>Briarfen 3D</title>
   <style>
     :root {
@@ -144,7 +145,7 @@
     .questBox {
       position: absolute;
       left: 18px;
-      bottom: 126px;
+      bottom: 148px;
       max-width: 340px;
       z-index: 4;
       padding: 12px 14px;
@@ -286,7 +287,7 @@
     @media (max-width: 760px) {
       .status { gap: 6px; }
       .pill { min-width: 90px; padding: 6px 8px; }
-      .questBox { left: 12px; right: 12px; bottom: 110px; max-width: none; }
+      .questBox { left: 12px; right: 12px; bottom: 154px; max-width: none; }
       .controls { padding: 0 12px 12px; }
       .dpad { grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(3, 44px); gap: 6px; }
       .dpad button { width: 44px; height: 44px; }
@@ -681,7 +682,7 @@
 
         group.position.set(x, 0, z);
         world.add(group);
-        worldState.monsters.push({ group, type, hp: type === 'wolf' ? 3 : 2, maxHp: type === 'wolf' ? 3 : 2, x, z, speed: type === 'wolf' ? 6.2 : 4.5, dir: rand(0, Math.PI * 2), attackCd: rand(1, 2.4), alive: true });
+        worldState.monsters.push({ group, type, hp: type === 'wolf' ? 3 : 2, maxHp: type === 'wolf' ? 3 : 2, x, z, speed: type === 'wolf' ? 4.2 : 3.2, dir: rand(0, Math.PI * 2), attackCd: rand(1.8, 3), alive: true });
       }
 
       function makeRelic(x, z, label) {
@@ -796,6 +797,10 @@
       }
 
       function resetWorld() {
+        if (player.group) {
+          world.remove(player.group);
+        }
+
         while (world.children.length) {
           const child = world.children.pop();
           if (child.geometry) child.geometry.dispose();
@@ -825,6 +830,7 @@
         state.relicsFound = 0;
         state.status = 'battle';
         buildWorld();
+        world.add(player.group);
         updateHud();
       }
 
@@ -906,7 +912,7 @@
 
         for (const monster of worldState.monsters) {
           if (!monster.alive) continue;
-          if (distance2D(player.group.position, monster) < 4.1) {
+          if (distance2D(player.group.position, monster) < 4.6) {
             monster.hp -= 1;
             hit = true;
             if (monster.hp <= 0) {
@@ -990,9 +996,13 @@
           const dz = player.group.position.z - monster.z;
           const dist = Math.hypot(dx, dz) || 1;
 
-          if (dist < 22) {
+          if (dist < 16) {
             monster.x += (dx / dist) * monster.speed * dt;
             monster.z += (dz / dist) * monster.speed * dt;
+            if (dist < 5) {
+              monster.x -= (dx / dist) * monster.speed * 1.5 * dt;
+              monster.z -= (dz / dist) * monster.speed * 1.5 * dt;
+            }
           } else {
             monster.x += Math.cos(monster.dir) * 2.5 * dt;
             monster.z += Math.sin(monster.dir) * 2.5 * dt;
@@ -1003,14 +1013,18 @@
           monster.group.position.z = monster.z;
           monster.group.position.y = 0.2 + Math.sin(state.gameTime * 7 + monster.x) * 0.15;
 
-          if (dist < 2.5) {
+          if (dist < 2.2) {
             monster.attackCd -= dt;
             if (monster.attackCd <= 0) {
-              monster.attackCd = 1.1 + Math.random() * 0.8;
+              monster.attackCd = 2.6 + Math.random() * 0.9;
               if (player.invuln <= 0) {
                 player.health -= 1;
-                player.invuln = 1.1;
-                setMessage('A monster hits you! Keep moving and strike back.');
+                player.invuln = 1.6;
+                monster.x -= (dx / dist) * 4;
+                monster.z -= (dz / dist) * 4;
+                monster.group.position.x = monster.x;
+                monster.group.position.z = monster.z;
+                setMessage('A monster clips you and recoils. Strike back or keep moving!');
                 if (player.health <= 0) {
                   state.mode = 'lost';
                   showOverlay('The Road Wins', 'The monsters overwhelmed you before the relics were recovered. Try another run.', 'The village needs another hero.');
